@@ -1,0 +1,6 @@
+[submodule "data/minecraft-assets"]
+	path = data/minecraft-assets
+	url = https://github.com/PrismarineJS/minecraft-assets.git
+[submodule "data/minecraft-data"]
+	path = data/minecraft-data
+	url = https://github.com/PrismarineJS/minecraft-data

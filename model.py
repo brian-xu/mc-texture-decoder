@@ -32,4 +32,4 @@ class TextureDecoder(nn.Module):
     def forward(self, x):
         for m in self.decoder:
             x = m(x)
-        return x.permute(0, 2, 3, 1)
+        return x

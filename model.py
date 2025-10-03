@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import torch
 import torch.nn as nn
 
 
@@ -27,6 +30,11 @@ class TextureDecoder(nn.Module):
                 )
             )
         self.decoder = nn.ModuleList(decoder_layers)
+
+    def load_pretrained(self):
+        proj_root = Path(__file__).parent
+        checkpoint = torch.load(proj_root / "ckpt/best_ckpt.pth")
+        self.load_state_dict(checkpoint)
 
     def forward(self, x):
         for m in self.decoder:

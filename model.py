@@ -1,11 +1,10 @@
-import torch
 import torch.nn as nn
 
 
 class TextureDecoder(nn.Module):
     def __init__(self):
         super(TextureDecoder, self).__init__()
-        linear_dims = [72, 576, 4608, 3072]
+        linear_dims = [64, 576, 4608, 3072]
         decoder_layers = []
         for i in range(len(linear_dims) - 1):
             if i > 0:

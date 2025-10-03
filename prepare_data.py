@@ -6,7 +6,7 @@ from PIL import Image
 from sklearn.decomposition import PCA
 
 MC_VERSION = "1.20.2"
-PCA_COMPONENTS = 72
+PCA_COMPONENTS = 64
 
 
 block_collision_shapes_json = (
@@ -51,6 +51,7 @@ for block in valid_blocks:
     labels.append(block)
     image = Image.open(valid_blocks[block]).convert("RGB")
     im_array = np.asarray(image)[:16, :16, :]
+    im_array = np.transpose(im_array, (2, 0, 1))
     image_data.append(im_array)
 
 image_data = np.array(image_data) / 255.0

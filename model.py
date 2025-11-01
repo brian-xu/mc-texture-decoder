@@ -3,11 +3,13 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
+INPUT_DIMS = 16
+
 
 class TextureDecoder(nn.Module):
     def __init__(self):
         super(TextureDecoder, self).__init__()
-        linear_dims = [64, 576, 4608, 3072]
+        linear_dims = [INPUT_DIMS, 144, 1296, 2048]
         decoder_layers = []
         for i in range(len(linear_dims) - 1):
             if i > 0:
@@ -15,8 +17,8 @@ class TextureDecoder(nn.Module):
             decoder_layers.append(
                 nn.Linear(in_features=linear_dims[i], out_features=linear_dims[i + 1])
             )
-        decoder_layers.append(nn.Unflatten(1, (12, 16, 16)))
-        conv_dims = [12, 6, 3]
+        decoder_layers.append(nn.Unflatten(1, (8, 16, 16)))
+        conv_dims = [8, 5, 3]
         for i in range(len(conv_dims) - 1):
             if i > 0:
                 decoder_layers.append(nn.ReLU())

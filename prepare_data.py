@@ -2,11 +2,12 @@ import json
 import os
 
 import numpy as np
+from model import INPUT_DIMS
 from PIL import Image
 from sklearn.decomposition import PCA
 
 MC_VERSION = "1.20.2"
-PCA_COMPONENTS = 64
+PCA_COMPONENTS = INPUT_DIMS
 
 
 block_collision_shapes_json = (

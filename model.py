@@ -57,9 +57,12 @@ class EmbeddingLoss(nn.Module):
         embeddings = np.load(proj_root / "processed/embeddings.npy")
         self.index.add(embeddings)
         self.embeddings = torch.tensor(embeddings)
+        self.cosine_loss = nn.CosineEmbeddingLoss()
 
     def forward(self, pred_embeddings):
         distances, indices = self.index.search(pred_embeddings.detach().numpy(), 1)
         indices = indices.flatten()
         closest_embeddings = self.embeddings[indices, :]
-        return ((pred_embeddings - closest_embeddings) ** 2).mean()
+        N, D = closest_embeddings.shape
+        labels = torch.ones(N)
+        return self.cosine_loss(pred_embeddings, closest_embeddings, labels)

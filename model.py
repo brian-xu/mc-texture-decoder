@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import faiss
+import numpy as np
 import torch
 import torch.nn as nn
 
@@ -42,3 +44,22 @@ class TextureDecoder(nn.Module):
         for m in self.decoder:
             x = m(x)
         return x
+
+
+class EmbeddingLoss(nn.Module):
+    def __init__(
+        self,
+        **kwargs,
+    ) -> None:
+        super().__init__()
+        proj_root = Path(__file__).parent
+        self.index = faiss.IndexFlatL2(INPUT_DIMS)
+        embeddings = np.load(proj_root / "processed/embeddings.npy")
+        self.index.add(embeddings)
+        self.embeddings = torch.tensor(embeddings)
+
+    def forward(self, pred_embeddings):
+        distances, indices = self.index.search(pred_embeddings.detach().numpy(), 1)
+        indices = indices.flatten()
+        closest_embeddings = self.embeddings[indices, :]
+        return ((pred_embeddings - closest_embeddings) ** 2).mean()
